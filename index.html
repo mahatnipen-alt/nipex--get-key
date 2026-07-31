@@ -139,7 +139,7 @@
 <div class="container">
     <div id="mainContainer">
         <div class="key-icon">
-            <img src="./assets/logo.png" alt="UKM">
+            <img src="./assets/logo.png" alt="NIPEX">
         </div>
 
         <h1>Access Unlocked</h1>
@@ -177,7 +177,7 @@
         const source = urlParams.get('source');
         const referrer = document.referrer;
         
-        if (source === "official" || referrer.includes("earnlinks.io") || referrer.includes("lootdest.org") || referrer.includes("steps.html")) {
+        if (source === "official" || referrer.includes("vplink.io") || referrer.includes("lootdest.org") || referrer.includes("steps.html")) {
             if (source === "official") {
                 const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 window.history.replaceState({}, document.title, cleanUrl);
