@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get a Free Key | NIPEX X TEAM</title>
     <style>
-        :root { --bg: #000000; --card: #121212; --text: #ffffff; --accent: #00ff88; --warning-bg: #1a1505; --warning-border: #3d3002; --warning-text: #eec136; }
+        :root { --bg: #000000; --card: #121212; --text: #ffffff; --accent: #ffffff; --warning-bg: #1a1505; --warning-border: #3d3002; --warning-text: #eec136; }
         
         body { 
             background-color: var(--bg); 
@@ -26,7 +26,7 @@
             text-align: center; 
         }
 
-        /* --- LOGO FIX --- */
+        /* --- LOGO FIX FOR PC & MOBILE --- */
         .key-icon { 
             background: #1a1a1a; 
             width: 80px; 
@@ -38,20 +38,13 @@
             margin: 0 auto 15px; 
             border: 1px solid #333; 
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(0,255,136,0.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.05);
         }
 
         .key-icon img {
             width: 100%;
             height: 100%;
             object-fit: cover; 
-        }
-
-        /* Fallback if no logo */
-        .key-icon .fallback-logo {
-            color: #00ff88;
-            font-size: 35px;
-            font-weight: bold;
         }
 
         @media (min-width: 768px) {
@@ -65,92 +58,29 @@
         .progress-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; }
         .step-indicator { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #888; }
         .circle { width: 22px; height: 22px; border: 2px solid #333; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 10px; }
-        .circle.active { border-color: #00ff88; color: #00ff88; background: rgba(0,255,136,0.1); }
+        .circle.active { border-color: var(--text); color: var(--text); }
         .line { flex-grow: 1; height: 2px; background: #222; margin: 0 15px; }
 
         .card { background: var(--card); border: 1px solid #222; border-radius: 24px; padding: 30px; text-align: left; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        h2 { font-size: 20px; margin-bottom: 15px; color: #00ff88; }
-        .card-p { color: #888; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
+        h2 { font-size: 20px; margin-bottom: 15px; }
+        .card-p { color: #888; font-size: 15px; line-height: 1.5; margin-bottom: 25px; }
 
         .warning { background: var(--warning-bg); border: 1px solid var(--warning-border); border-radius: 12px; padding: 15px; display: flex; gap: 12px; margin-bottom: 30px; }
         .warning-icon { color: var(--warning-text); font-size: 18px; }
         .warning-title { color: var(--warning-text); font-weight: bold; font-size: 14px; }
         .warning-text { color: #8a701f; font-size: 12px; }
 
-        .btn { 
-            width: 100%; 
-            padding: 16px; 
-            background: #ffffff; 
-            color: #000; 
-            border: none; 
-            border-radius: 14px; 
-            font-size: 16px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: 0.3s ease; 
-        }
-        .btn:hover { 
-            transform: scale(1.02); 
-            background: #00ff88; 
-            box-shadow: 0 8px 25px rgba(0,255,136,0.2);
-        }
-
-        /* Key Display Box */
-        .key-box {
-            background: #000;
-            padding: 18px;
-            border-radius: 14px;
-            border: 1px dashed #00ff88;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        #finalKey {
-            color: #00ff88;
-            font-family: 'Courier New', monospace;
-            font-size: 18px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-
-        .key-info {
-            font-size: 12px;
-            color: #666;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .btn-secondary {
-            background: #222;
-            color: #fff;
-            border: 1px solid #444;
-            margin-top: 12px;
-        }
-
-        .btn-secondary:hover {
-            background: #00ff88;
-            color: #000;
-        }
-
-        /* Footer */
-        .footer { 
-            margin-top: 60px; 
-            color: #333; 
-            font-size: 10px; 
-            letter-spacing: 2px; 
-            text-transform: uppercase; 
-            font-weight: bold; 
-        }
+        .btn { width: 100%; padding: 16px; background: #ffffff; color: #000; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s ease; }
+        .btn:hover { transform: scale(1.02); background: #00ff88; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="key-icon">
-        <!-- Logo with fallback -->
-        <img src="./assets/logo.png" alt="NIPEX" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'fallback-logo\'>N</span>'">
+        <img src="./assets/logo.png" alt="NIPEX">
     </div>
-    <h1>🔑 Get a Free Key</h1>
+    <h1>Get a Free Key</h1>
     <p class="subtitle">Complete the step below to receive your access key.</p>
 
     <div class="progress-container">
@@ -159,11 +89,11 @@
             <span>Step 1 of 1</span>
         </div>
         <div class="line"></div>
-        <div class="circle" style="background: #111;">2</div>
+        <div class="circle" style="background: #111;"></div>
     </div>
 
     <div class="card">
-        <h2>✅ First Step</h2>
+        <h2>First Step</h2>
         <p class="card-p">To continue, click the button below to complete the first step. You will be redirected and then return to this page once finished.</p>
 
         <div class="warning">
@@ -174,153 +104,11 @@
             </div>
         </div>
 
-        <!-- Key Display Area -->
-        <div class="key-box">
-            <span id="finalKey">🔐 Click below to generate</span>
-        </div>
-
-        <button class="btn" onclick="handleContinue()">
-            🚀 Continue to Step
+        <button class="btn" onclick="location.href='https://vplink.in/TEDa9c'">
+            Continue to Step ➜
         </button>
-
-        <button class="btn btn-secondary" onclick="generateKey()">
-            🔄 Generate Key
-        </button>
-
-        <div class="key-info">
-            ⚡ Key generated daily — same for all devices
-        </div>
     </div>
-
-    <div class="footer">NIPEX SECURITY SYSTEM</div>
 </div>
 
-<script>
-    // ============================================================
-    // ✅ SMART KEY GENERATOR - Works everywhere
-    // ============================================================
-
-    // ----- Generate Daily Key (Same for everyone) -----
-    function generateKey() {
-        try {
-            const today = new Date();
-            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
-            const year = today.getFullYear();
-            const month = today.getMonth() + 1;
-            const date = today.getDate();
-            
-            // Seed based on date only (No IP!)
-            let seed = dayOfYear + year + month + date + 999;
-
-            function rnd() { 
-                var x = Math.sin(seed++) * 10000; 
-                return Math.abs(x - Math.floor(x)); 
-            }
-            
-            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-            let segments = [];
-            
-            for(let i = 0; i < 4; i++) {
-                let s = "";
-                for(let j = 0; j < 4; j++) {
-                    let r = Math.floor(rnd() * chars.length);
-                    s += chars.charAt(r);
-                }
-                segments.push(s);
-            }
-
-            const finalKey = "NIPEX-" + segments.join("-");
-            document.getElementById('finalKey').innerText = finalKey;
-            
-        } catch (error) {
-            // Fallback key if something goes wrong
-            document.getElementById('finalKey').innerText = "NIPEX-ABCD-EFGH-IJKL-MNOP";
-        }
-    }
-
-    // ----- Handle Continue Button -----
-    function handleContinue() {
-        // First generate the key
-        generateKey();
-        
-        // Show a success message
-        const btn = event.target;
-        const originalText = btn.innerText;
-        btn.innerText = "✅ Key Generated!";
-        btn.style.background = "#00ff88";
-        btn.style.color = "#000";
-        
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.style.background = "#ffffff";
-            btn.style.color = "#000";
-        }, 2000);
-        
-        // Open the link in new tab (optional)
-        // window.open('https://vplink.in/1X3X', '_blank');
-    }
-
-    // ----- Copy Key Function -----
-    function copyKey() {
-        const keyText = document.getElementById('finalKey').innerText;
-        if(keyText.includes("🔐") || keyText.includes("Click")) {
-            alert("Please generate a key first!");
-            return;
-        }
-
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(keyText).then(() => {
-                showCopyFeedback();
-            }).catch(() => {
-                fallbackCopy(keyText);
-            });
-        } else {
-            fallbackCopy(keyText);
-        }
-    }
-
-    function fallbackCopy(text) {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-9999px';
-        textArea.style.top = '-9999px';
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            showCopyFeedback();
-        } catch (err) {
-            alert('Copy failed. Please copy manually: ' + text);
-        }
-        document.body.removeChild(textArea);
-    }
-
-    function showCopyFeedback() {
-        alert('✅ Key copied to clipboard!');
-    }
-
-    // ============================================================
-    // 🚀 AUTO-START - Works everywhere
-    // ============================================================
-    
-    // Auto-generate key on load
-    window.onload = function() {
-        generateKey();
-        console.log('✅ NIPEX Key Generator is running!');
-        console.log('📅 Daily key will change at midnight');
-        console.log('🌍 Same key for all devices');
-    };
-
-    // Add copy functionality to key box click
-    document.addEventListener('DOMContentLoaded', function() {
-        const keyBox = document.querySelector('.key-box');
-        if (keyBox) {
-            keyBox.style.cursor = 'pointer';
-            keyBox.title = 'Click to copy key';
-            keyBox.addEventListener('click', copyKey);
-        }
-    });
-</script>
 </body>
 </html>
