@@ -3,71 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIPEX · Daily Key</title>
+    <title>Key Generated | Unknown Modz</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
+        :root { --bg: #000000; --card: #121212; --text: #ffffff; --accent: #00ff88; --error: #ff4444; }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px;
             box-sizing: border-box;
         }
 
-        body {
-            background: #0b0b0b;
-            color: #f0f0f0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 1.5rem;
-            margin: 0;
-            line-height: 1.5;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 420px;
-            margin: 0 auto;
+        .container { 
+            width: 100%; 
+            max-width: 400px; 
             text-align: center;
+            margin-top: 50px;
         }
 
-        /* visibility toggles */
+        /* --- UI Visibility Controls --- */
         #mainContainer { display: none; }
         #bypassContainer { display: none; }
 
-        /* --- card styles --- */
-        .card {
-            background: #141414;
-            border: 1px solid #2a2a2a;
-            border-radius: 2.5rem;
-            padding: 2.2rem 1.8rem 2rem;
-            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(2px);
-            transition: all 0.2s ease;
+        /* --- BYPASS ERROR CARD --- */
+        .error-card { 
+            background: #1a0a0a; 
+            border: 1px solid #441111; 
+            border-radius: 28px; 
+            padding: 40px 30px; 
+            box-shadow: 0 10px 40px rgba(255,0,0,0.1);
         }
+        .error-icon { font-size: 50px; margin-bottom: 20px; }
+        .error-title { color: var(--error); font-size: 24px; font-weight: bold; margin-bottom: 15px; }
 
-        .error-card {
-            background: #1a0a0a;
-            border: 1px solid #4a1a1a;
-            border-radius: 2.5rem;
-            padding: 2.8rem 1.8rem;
-            box-shadow: 0 0 30px rgba(255, 30, 30, 0.05);
-        }
-
-        .key-icon {
-            background: #1a1a1a;
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: -55px auto 18px;
-            border: 1px solid #2e2e2e;
-            box-shadow: 0 0 30px rgba(0, 255, 180, 0.08);
+        .key-icon { 
+            background: #1a1a1a; 
+            width: 85px; 
+            height: 85px; 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            margin: -45px auto 15px; 
+            border: 1px solid #333; 
+            overflow: hidden; 
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.1);
             position: relative;
-            z-index: 5;
-            overflow: hidden;
+            z-index: 10;
         }
 
         .key-icon img {
@@ -76,485 +64,181 @@
             object-fit: cover;
         }
 
-        .key-icon .fallback-icon {
-            font-size: 38px;
-            color: #00ffaa;
-            display: none;
+        @media (min-width: 768px) {
+            .container { max-width: 450px; }
+            .key-icon { width: 110px; height: 110px; margin: -55px auto 20px; }
         }
 
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 0.2rem;
-            color: #ffffff;
+        h1 { font-size: 28px; font-weight: bold; margin-bottom: 8px; }
+        .subtitle { color: #888; font-size: 14px; margin-bottom: 30px; }
+
+        .card { 
+            background: var(--card); 
+            border: 1px solid #222; 
+            border-radius: 28px; 
+            padding: 40px 30px 30px; 
+            text-align: center; 
+            box-shadow: 0 15px 50px rgba(0,0,0,0.6); 
+            position: relative;
         }
 
-        .subtitle {
-            color: #8a8a8a;
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-            font-weight: 400;
+        h2 { font-size: 22px; margin-bottom: 12px; color: var(--accent); font-weight: 700; }
+        .card-p { color: #999; font-size: 14px; line-height: 1.6; margin-bottom: 25px; }
+
+        .key-box { 
+            background: #000; 
+            padding: 22px; 
+            border-radius: 18px; 
+            border: 1px dashed var(--accent); 
+            margin-bottom: 25px; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        
+        #finalKey { 
+            color: var(--accent); 
+            font-family: 'Courier New', monospace; 
+            font-size: 19px; 
+            font-weight: bold; 
+            letter-spacing: 1px; 
+        }
+        
+        .btn { 
+            width: 100%; 
+            padding: 18px; 
+            background: #ffffff; 
+            color: #000; 
+            border: none; 
+            border-radius: 16px; 
+            font-size: 16px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
-        .card h2 {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #00ffaa;
-            margin-bottom: 0.4rem;
-            letter-spacing: -0.02em;
+        .btn:hover { 
+            transform: scale(1.03); 
+            background: var(--accent); 
+            box-shadow: 0 10px 20px rgba(0,255,136,0.2);
         }
 
-        .card-p {
-            color: #aaa;
-            font-size: 0.9rem;
-            margin-bottom: 1.8rem;
-            padding: 0 0.2rem;
-        }
+        .btn-red { background: var(--error); color: white; margin-top: 20px; }
 
-        .key-box {
-            background: #070707;
-            padding: 1.5rem 0.8rem;
-            border-radius: 1.8rem;
-            border: 1px dashed #00ffaa;
-            margin-bottom: 2rem;
-            transition: border 0.2s;
-            word-break: break-word;
-        }
-
-        #finalKey {
-            color: #00ffaa;
-            font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: 0.04em;
-            display: inline-block;
-            padding: 0 0.2rem;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 1.1rem 0.5rem;
-            background: #ffffff;
-            color: #0b0b0b;
-            border: none;
-            border-radius: 2rem;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.2);
-            letter-spacing: 0.02em;
-        }
-
-        .btn:hover {
-            transform: scale(1.02);
-            background: #00ffaa;
-            box-shadow: 0 8px 24px rgba(0, 255, 170, 0.25);
-        }
-
-        .btn-red {
-            background: #dc3545;
-            color: white;
-            margin-top: 1.2rem;
-        }
-
-        .btn-red:hover {
-            background: #ff3b4a;
-            box-shadow: 0 8px 20px rgba(255, 50, 50, 0.2);
-        }
-
-        .footer {
-            margin-top: 3rem;
-            color: #2a2a2a;
-            font-size: 0.6rem;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        .error-title {
-            color: #ff6b6b;
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin: 0.4rem 0 0.8rem;
-        }
-
-        .error-icon {
-            font-size: 3.2rem;
-            line-height: 1;
-        }
-
-        .error-card p {
-            color: #9a9a9a;
-            font-size: 0.9rem;
-            margin: 0.5rem 0 1.8rem;
-        }
-
-        .loading-dots::after {
-            content: '...';
-            animation: dots 1.2s steps(4, end) infinite;
-        }
-
-        @keyframes dots {
-            0% { content: ''; }
-            25% { content: '.'; }
-            50% { content: '..'; }
-            75% { content: '...'; }
-        }
-
-        @media (min-width: 480px) {
-            .key-icon {
-                width: 100px;
-                height: 100px;
-                margin: -60px auto 20px;
-            }
-            #finalKey {
-                font-size: 1.3rem;
-            }
-            .card {
-                padding: 2.5rem 2.2rem 2.2rem;
-            }
-        }
-
-        /* Bypass detection badge */
-        .security-badge {
-            display: inline-block;
-            background: #1f1f1f;
-            color: #666;
-            font-size: 0.6rem;
-            padding: 0.2rem 1rem;
-            border-radius: 20px;
-            margin-top: 0.8rem;
-            letter-spacing: 0.5px;
-        }
-
-        /* steps.html specific styles */
-        .steps-card {
-            background: #0f0f0f;
-            border: 1px solid #2a2a2a;
-            border-radius: 2rem;
-            padding: 2rem 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .steps-card h3 {
-            color: #00ffaa;
-            font-size: 1.2rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .steps-card p {
-            color: #888;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        .steps-card .step-item {
-            background: #1a1a1a;
-            padding: 0.8rem 1rem;
-            border-radius: 1rem;
-            margin: 0.5rem 0;
-            text-align: left;
-            color: #ccc;
-            font-size: 0.85rem;
-            border-left: 3px solid #00ffaa;
-        }
-
-        .steps-card .step-item strong {
-            color: #fff;
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: #00ffaa;
-            border: 2px solid #00ffaa;
-            margin-top: 0.5rem;
-        }
-
-        .btn-outline:hover {
-            background: #00ffaa;
-            color: #000;
+        .footer { 
+            margin-top: 80px; 
+            color: #333; 
+            font-size: 10px; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- MAIN CARD (shown after security check) -->
     <div id="mainContainer">
         <div class="key-icon">
-            <img src="./assets/logo.png" alt="NIPEX" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-            <span class="fallback-icon">🔑</span>
+            <img src="./assets/logo.png" alt="NIPEX">
         </div>
 
         <h1>Access Unlocked</h1>
-        <p class="subtitle">Daily device-locked key — valid today only</p>
+        <p class="subtitle">Your universal license key is ready.</p>
 
         <div class="card">
-            <h2>⚡ Key Ready</h2>
-            <p class="card-p">This key is bound to your device &amp; day. <br>It changes every 24h.</p>
+            <h2>Generation Success!</h2>
+            <p class="card-p">This key works on any device. Share it freely.</p>
 
             <div class="key-box">
-                <span id="finalKey" class="loading-dots">FETCHING</span>
+                <span id="finalKey">SECURE FETCHING...</span>
             </div>
 
-            <button class="btn" id="copyBtn" onclick="copyKey()">📋 COPY TO CLIPBOARD</button>
-            <div class="security-badge">🔒 secure · device locked</div>
+            <button class="btn" id="copyBtn" onclick="copyKey()">
+                COPY TO CLIPBOARD
+            </button>
         </div>
     </div>
 
-    <!-- BYPASS / ERROR CARD (shown if security check fails) -->
     <div id="bypassContainer">
         <div class="error-card">
-            <div class="error-icon">⛔</div>
-            <div class="error-title">Access Blocked</div>
-            <p>Unauthorized access attempt detected.<br>This page requires valid verification.</p>
-            <button class="btn btn-red" onclick="location.href='steps.html'">↩ RETURN TO STEPS</button>
-            <div class="security-badge" style="margin-top:1.2rem; background:#2a0a0a; color:#aa5555;">🚫 bypass blocked</div>
+            <div class="error-icon">🚫</div>
+            <div class="error-title">Bypass Detected!</div>
+            <p style="color:#888; font-size: 14px; line-height: 1.5;">Direct access is prohibited. Please use the official link from the script to generate your key.</p>
+            <button class="btn btn-red" onclick="location.href='steps.html'">RETURN TO STEPS</button>
         </div>
     </div>
 
-    <!-- STEPS PAGE (dummy page for return button) -->
-    <div id="stepsContainer" style="display: none;">
-        <div class="key-icon" style="margin-top: 0;">
-            <span class="fallback-icon" style="display:block;">📋</span>
-        </div>
-        <h1>How to Access</h1>
-        <p class="subtitle">Follow these steps to get your key</p>
-
-        <div class="steps-card">
-            <h3>🔐 Verification Required</h3>
-            <p style="margin-bottom: 1rem;">You are seeing this because you tried to access the key page directly.</p>
-            
-            <div class="step-item">
-                <strong>Step 1:</strong> Visit the official NIPEX page from a trusted source
-            </div>
-            <div class="step-item">
-                <strong>Step 2:</strong> Click on the "Generate Key" button from the main page
-            </div>
-            <div class="step-item">
-                <strong>Step 3:</strong> Wait for the key to be generated (this may take a few seconds)
-            </div>
-            <div class="step-item" style="border-left-color: #ff6b6b;">
-                <strong>⚠️ Note:</strong> Direct access is blocked for security reasons
-            </div>
-
-            <button class="btn btn-outline" onclick="window.history.back()">← GO BACK</button>
-            <button class="btn" style="margin-top: 0.5rem; background: #00ffaa; color: #000;" onclick="location.href='?source=official'">🔄 TRY AGAIN</button>
-        </div>
-    </div>
-
-    <div class="footer">UNKNOWN MODZ · SECURE DAILY KEY</div>
+    <div class="footer">UNKNOWN MODZ SECURITY SYSTEM</div>
 </div>
 
 <script>
-    (function() {
-        "use strict";
-
-        // Check if we're on steps.html page
-        const isStepsPage = window.location.pathname.includes('steps.html') || 
-                           window.location.pathname.endsWith('/steps') ||
-                           document.referrer.includes('steps.html');
-
-        // ----- ADVANCED SECURITY CHECK (blocks all bypass attempts) -----
-        function checkSecurity() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const source = urlParams.get('source');
-            const referrer = document.referrer || '';
-            const host = window.location.hostname;
-
-            // If we're on steps page, show steps content
-            if (isStepsPage || window.location.pathname.includes('steps.html')) {
-                document.getElementById('mainContainer').style.display = 'none';
-                document.getElementById('bypassContainer').style.display = 'none';
-                document.getElementById('stepsContainer').style.display = 'block';
-                return;
+    async function checkSecurity() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const source = urlParams.get('source');
+        const referrer = document.referrer;
+        
+        if (source === "official" || referrer.includes("https://nipex-webb.netlify.app/?source=official") || referrer.includes("lootdest.org") || referrer.includes("steps.html")) {
+            if (source === "official") {
+                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.replaceState({}, document.title, cleanUrl);
             }
+            document.getElementById('mainContainer').style.display = "block";
+            generateLockedKey(); 
+        } else {
+            document.getElementById('mainContainer').style.display = "none";
+            document.getElementById('bypassContainer').style.display = "block";
+            document.getElementById('finalKey').innerText = "ACCESS DENIED";
+        }
+    }
 
-            // ----- BLOCK DIRECT ACCESS (no referrer, no source) -----
-            const isDirect = (referrer === '' && source === null);
-            
-            // ----- BLOCK EMPTY REFERRER (except localhost for testing) -----
-            const isLocal = (host === 'localhost' || host === '127.0.0.1' || host === '');
-            
-            // ----- ALLOWED REFERRERS (official sources) -----
-            const allowedReferrers = [
-                'vplink.in',
-                'lootdest.org',
-                'steps.html',
-                'nipex.io',
-                'unknownmodz.com'
-            ];
-
-            let referrerOk = false;
-            for (let r of allowedReferrers) {
-                if (referrer.includes(r)) {
-                    referrerOk = true;
-                    break;
-                }
+    async function generateLockedKey() {
+    try {
+        // Sirf date-based key (IP hata diya)
+        const day = Math.floor(Date.now() / 86400000);
+        let seed = day + 2026;  // Daily expiry ke liye date use ho rahi hai
+        
+        function rnd() { 
+            var x = Math.sin(seed++) * 10000; 
+            return Math.abs(x - Math.floor(x)); 
+        }
+        
+        const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        let segments = [];
+        for(let i=0; i<4; i++) {
+            let s = "";
+            for(let j=0; j<4; j++) {
+                let r = Math.floor(rnd() * chars.length);
+                s += chars.charAt(r);
             }
-
-            // ----- SOURCE PARAMETER CHECK (must be 'official') -----
-            const sourceOk = (source === 'official');
-
-            // ----- DEPLOYMENT ENVIRONMENTS (for testing) -----
-            const isDeploy = host.includes('netlify.app') || 
-                             host.includes('vercel.app') || 
-                             host.includes('github.io');
-
-            // ----- FINAL DECISION: BLOCK if NOT authorized -----
-            const isAuthorized = (sourceOk || referrerOk || isLocal || isDeploy) && !isDirect;
-
-            if (isAuthorized) {
-                // Clean URL if source param was used
-                if (sourceOk) {
-                    const clean = window.location.protocol + '//' + host + window.location.pathname;
-                    window.history.replaceState({}, document.title, clean);
-                }
-                document.getElementById('mainContainer').style.display = 'block';
-                document.getElementById('bypassContainer').style.display = 'none';
-                document.getElementById('stepsContainer').style.display = 'none';
-                generateDayKey();
-            } else {
-                // BLOCKED - show error
-                document.getElementById('mainContainer').style.display = 'none';
-                document.getElementById('bypassContainer').style.display = 'block';
-                document.getElementById('stepsContainer').style.display = 'none';
-                document.getElementById('finalKey').innerText = '⛔ ACCESS DENIED';
-                document.getElementById('finalKey').className = '';
-                
-                // Log attempt (for debugging)
-                console.warn('🔒 Security: Access blocked. Referrer:', referrer, 'Source:', source, 'Host:', host);
-            }
+            segments.push(s);
         }
 
-        // ----- CORE: generate 1-day device-locked key -----
-        async function generateDayKey() {
-            const keySpan = document.getElementById('finalKey');
-            keySpan.className = 'loading-dots';
-            keySpan.innerText = 'FETCHING';
+        const finalKey = "NIPEX-" + segments.join("-");
+        document.getElementById('finalKey').innerText = finalKey;
 
-            try {
-                // 1) get public IP
-                const resp = await fetch('https://api.ipify.org?format=json', { 
-                    cache: 'no-store' 
-                });
-                const data = await resp.json();
-                const ip = data.ip || '0.0.0.0';
+    } catch (err) {
+        document.getElementById('finalKey').innerText = "CONNECT TO INTERNET";
+    }
+}
 
-                // 2) unique day seed (changes every 24h)
-                const day = Math.floor(Date.now() / 86400000); // days since epoch
-                const year = 2026; // fixed year (can be changed)
-                const ipSeed = parseInt(ip.replace(/\./g, '').slice(0, 6), 10) || 12345;
 
-                // combine: ip + day + year (stronger uniqueness)
-                let seed = ipSeed + day * 100 + year;
 
-                // pseudo-random generator (deterministic)
-                function nextRand() {
-                    const x = Math.sin(seed++) * 10000;
-                    return Math.abs(x - Math.floor(x));
-                }
+    function copyKey() {
+        const keyText = document.getElementById('finalKey').innerText;
+        if(keyText.includes("SECURE") || keyText.includes("CONNECT")) return;
 
-                const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no confusing chars
-                let segments = [];
-
-                for (let i = 0; i < 4; i++) {
-                    let seg = '';
-                    for (let j = 0; j < 4; j++) {
-                        const idx = Math.floor(nextRand() * chars.length);
-                        seg += chars.charAt(idx);
-                    }
-                    segments.push(seg);
-                }
-
-                const key = 'NIPEX-' + segments.join('-');
-                keySpan.innerText = key;
-                keySpan.className = ''; // remove loading dots
-
-            } catch (err) {
-                // fallback: generate key without IP (still day-based)
-                console.warn('IP fetch failed, using fallback seed');
-                const fallbackSeed = 2026 + Math.floor(Date.now() / 86400000) * 7 + 42;
-                let seed = fallbackSeed;
-                function nextRand() {
-                    const x = Math.sin(seed++) * 10000;
-                    return Math.abs(x - Math.floor(x));
-                }
-                const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-                let segments = [];
-                for (let i = 0; i < 4; i++) {
-                    let seg = '';
-                    for (let j = 0; j < 4; j++) {
-                        const idx = Math.floor(nextRand() * chars.length);
-                        seg += chars.charAt(idx);
-                    }
-                    segments.push(seg);
-                }
-                const key = 'NIPEX-' + segments.join('-');
-                keySpan.innerText = key;
-                keySpan.className = '';
-            }
-        }
-
-        // ----- COPY FUNCTION -----
-        window.copyKey = function() {
-            const keySpan = document.getElementById('finalKey');
-            const keyText = keySpan.innerText;
-
-            if (!keyText || keyText.includes('FETCHING') || keyText.includes('DENIED') || keyText.includes('⛔')) {
-                return;
-            }
-
+        navigator.clipboard.writeText(keyText).then(() => {
             const btn = document.getElementById('copyBtn');
-
-            navigator.clipboard.writeText(keyText).then(() => {
-                btn.innerText = '✅ COPIED!';
-                btn.style.background = '#00ffaa';
-                btn.style.color = '#000';
-                setTimeout(() => {
-                    btn.innerText = '📋 COPY TO CLIPBOARD';
-                    btn.style.background = '#ffffff';
-                    btn.style.color = '#0b0b0b';
-                }, 2400);
-            }).catch(() => {
-                // fallback for old browsers
-                const ta = document.createElement('textarea');
-                ta.value = keyText;
-                ta.style.position = 'fixed';
-                ta.style.left = '-9999px';
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
-
-                btn.innerText = '✅ COPIED!';
-                btn.style.background = '#00ffaa';
-                btn.style.color = '#000';
-                setTimeout(() => {
-                    btn.innerText = '📋 COPY TO CLIPBOARD';
-                    btn.style.background = '#ffffff';
-                    btn.style.color = '#0b0b0b';
-                }, 2400);
-            });
-        };
-
-        // handle image fallback
-        document.addEventListener('DOMContentLoaded', function() {
-            const img = document.querySelector('.key-icon img');
-            if (img) {
-                img.onerror = function() {
-                    this.style.display = 'none';
-                    const fallback = this.nextElementSibling;
-                    if (fallback) fallback.style.display = 'block';
-                };
-            }
+            btn.innerText = "COPIED SUCCESSFULLY! ✅";
+            btn.style.background = "#00ff88";
+            setTimeout(() => { 
+                btn.innerText = "COPY TO CLIPBOARD"; 
+                btn.style.background = "#ffffff";
+            }, 2000);
         });
+    }
 
-        // start security check
-        window.onload = checkSecurity;
-    })();
+    window.onload = checkSecurity;
 </script>
-
 </body>
-    </html>
+</html>
