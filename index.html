@@ -168,16 +168,218 @@
                 <span id="finalKey">GENERATING...</span>
             </div>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Key | NIPEX X LAG</title>
+    <style>
+        :root { --bg: #000000; --card: #121212; --text: #ffffff; --accent: #00ff88; --error: #ff4444; }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 400px; 
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #mainContainer { display: none; }
+        #bypassContainer { display: none; }
+
+        .error-card { 
+            background: #1a0a0a; 
+            border: 1px solid #441111; 
+            border-radius: 28px; 
+            padding: 40px 30px; 
+            box-shadow: 0 10px 40px rgba(255,0,0,0.1);
+        }
+        .error-icon { font-size: 50px; margin-bottom: 20px; }
+        .error-title { color: var(--error); font-size: 24px; font-weight: bold; margin-bottom: 15px; }
+
+        .key-icon { 
+            background: #1a1a1a; 
+            width: 85px; 
+            height: 85px; 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            margin: -45px auto 15px; 
+            border: 1px solid #333; 
+            overflow: hidden; 
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .key-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (min-width: 768px) {
+            .container { max-width: 450px; }
+            .key-icon { width: 110px; height: 110px; margin: -55px auto 20px; }
+        }
+
+        h1 { font-size: 28px; font-weight: bold; margin-bottom: 8px; }
+        .subtitle { color: #888; font-size: 14px; margin-bottom: 30px; }
+
+        .card { 
+            background: var(--card); 
+            border: 1px solid #222; 
+            border-radius: 28px; 
+            padding: 40px 30px 30px; 
+            text-align: center; 
+            box-shadow: 0 15px 50px rgba(0,0,0,0.6); 
+            position: relative;
+        }
+
+        h2 { font-size: 22px; margin-bottom: 12px; color: var(--accent); font-weight: 700; }
+        .card-p { color: #999; font-size: 14px; line-height: 1.6; margin-bottom: 25px; }
+
+        .key-box { 
+            background: #000; 
+            padding: 22px; 
+            border-radius: 18px; 
+            border: 1px dashed var(--accent); 
+            margin-bottom: 15px; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        
+        #finalKey { 
+            color: var(--accent); 
+            font-family: 'Courier New', monospace; 
+            font-size: 19px; 
+            font-weight: bold; 
+            letter-spacing: 1px; 
+        }
+        
+        .btn { 
+            width: 100%; 
+            padding: 18px; 
+            background: #ffffff; 
+            color: #000; 
+            border: none; 
+            border-radius: 16px; 
+            font-size: 16px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+
+        .btn:hover { 
+            transform: scale(1.03); 
+            background: var(--accent); 
+            box-shadow: 0 10px 20px rgba(0,255,136,0.2);
+        }
+
+        .btn-red { background: var(--error); color: white; margin-top: 20px; }
+
+        .footer { 
+            margin-top: 80px; 
+            color: #333; 
+            font-size: 10px; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+        }
+
+        .btn-regenerate {
+            background: #222;
+            color: #fff;
+            margin-top: 12px;
+            border: 1px solid #444;
+        }
+        .btn-regenerate:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .key-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .expiry-box {
+            background: #1a1a1a;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 15px;
+            border: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .expiry-label {
+            color: #888;
+        }
+
+        .expiry-value {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .countdown {
+            color: #ffd93d;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="mainContainer">
+        <div class="key-icon">
+            <img src="./assets/logo.png" alt="NIPEX">
+        </div>
+
+        <h1>Daily Key Generator</h1>
+        <p class="subtitle">Har din nayi key — sabhi devices par same</p>
+
+        <div class="card">
+            <h2>✅ Key Generated</h2>
+            <p class="card-p">Ye key <span style="color: #ff6b6b;">aaj</span> ke liye valid hai. <br><span style="color: #00ff88;">Kal nayi key generate hogi!</span></p>
+
+            <div class="key-box">
+                <span id="finalKey">GENERATING...</span>
+            </div>
+
+            <div class="expiry-box">
+                <span class="expiry-label">⏳ Expires In:</span>
+                <span class="countdown" id="countdownTimer">--:--:--</span>
+                <span class="expiry-value" id="expiryDate">Loading...</span>
+            </div>
+
             <button class="btn" id="copyBtn" onclick="copyKey()">
                 📋 COPY TO CLIPBOARD
             </button>
 
-            <button class="btn btn-regenerate" onclick="generateUniversalKey()">
-                🔄 Generate New Key
+            <button class="btn btn-regenerate" onclick="generateDailyKey()">
+                🔄 Generate Today's Key
             </button>
 
             <div class="key-info">
-                ⚡ Daily auto-update — har din nayi key
+                ⚡ Daily auto-update — har din subah nayi key
             </div>
         </div>
     </div>
@@ -211,7 +413,8 @@
                 window.history.replaceState({}, document.title, cleanUrl);
             }
             document.getElementById('mainContainer').style.display = "block";
-            generateUniversalKey();
+            generateDailyKey();
+            startCountdown();
         } else {
             document.getElementById('mainContainer').style.display = "none";
             document.getElementById('bypassContainer').style.display = "block";
@@ -219,17 +422,17 @@
         }
     }
 
-    // ----- UNIVERSAL KEY GENERATOR (No IP Lock) -----
-    function generateUniversalKey() {
-        // Daily seed (same for everyone on same day)
+    // ----- DAILY KEY GENERATOR (Same for everyone on same day) -----
+    function generateDailyKey() {
         const today = new Date();
         const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
         const year = today.getFullYear();
+        const month = today.getMonth() + 1;
+        const date = today.getDate();
         
-        // Fixed seed: Only date + year (No IP!)
-        let seed = dayOfYear + year + 999;
+        // Seed based on date only (No IP!)
+        let seed = dayOfYear + year + month + date + 999;
 
-        // Pseudo-random function
         function rnd() { 
             var x = Math.sin(seed++) * 10000; 
             return Math.abs(x - Math.floor(x)); 
@@ -251,6 +454,52 @@
         document.getElementById('finalKey').innerText = finalKey;
         document.getElementById('copyBtn').innerHTML = "📋 COPY TO CLIPBOARD";
         document.getElementById('copyBtn').style.background = "#ffffff";
+        
+        // Update expiry info
+        updateExpiryInfo();
+    }
+
+    // ----- UPDATE EXPIRY INFO -----
+    function updateExpiryInfo() {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(0, 0, 0, 0);
+        
+        const expiryDateElem = document.getElementById('expiryDate');
+        expiryDateElem.innerText = tomorrow.toLocaleDateString('en-IN', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+    }
+
+    // ----- COUNTDOWN TIMER -----
+    function startCountdown() {
+        function updateTimer() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            const diff = tomorrow - now;
+            
+            if (diff <= 0) {
+                document.getElementById('countdownTimer').innerText = "EXPIRED!";
+                document.getElementById('countdownTimer').style.color = "#ff4444";
+                return;
+            }
+            
+            const hours = Math.floor(diff / 3600000);
+            const minutes = Math.floor((diff % 3600000) / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+            
+            document.getElementById('countdownTimer').innerText = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+        
+        updateTimer();
+        setInterval(updateTimer, 1000);
     }
 
     // ----- COPY FUNCTION -----
