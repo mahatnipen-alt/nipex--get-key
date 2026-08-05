@@ -178,7 +178,7 @@
         const source = urlParams.get('source');
         const referrer = document.referrer;
         
-        if (source === "official" || referrer.includes("https://nipex-webb.netlify.app/?source=official") || referrer.includes("lootdest.org") || referrer.includes("steps.html")) {
+        if (source === "official" || referrer.includes("https://nipex-lag.netlify.app/?source=official") || referrer.includes("lootdest.org") || referrer.includes("steps.html")) {
             if (source === "official") {
                 const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 window.history.replaceState({}, document.title, cleanUrl);
