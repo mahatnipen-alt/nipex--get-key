@@ -27,6 +27,7 @@
             margin-top: 50px;
         }
 
+        /* --- TEXT LOGO STYLES --- */
         .key-icon { 
             background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
             width: 120px; 
@@ -90,7 +91,7 @@
             position: relative;
         }
 
-        h2 { font-size: 22px; margin-bottom: 12px; font-weight: 700; }
+        h2 { font-size: 22px; margin-bottom: 12px; color: var(--accent); font-weight: 700; }
         .card-p { color: #999; font-size: 14px; line-height: 1.6; margin-bottom: 25px; }
 
         .key-box { 
@@ -138,45 +139,6 @@
             text-transform: uppercase; 
             font-weight: bold; 
         }
-
-        .error-title { color: var(--error); }
-        .error-icon { 
-            font-size: 48px; 
-            margin-bottom: 10px; 
-            display: block; 
-        }
-        .error-box { 
-            border-color: var(--error) !important; 
-        }
-        .error-box #finalKey { 
-            color: var(--error); 
-        }
-
-        .btn-red { 
-            background: var(--error); 
-            color: white; 
-        }
-        .btn-red:hover { 
-            background: #cc0000; 
-            transform: scale(1.03); 
-            box-shadow: 0 10px 20px rgba(255,68,68,0.2);
-        }
-
-        .loader {
-            border: 3px solid #1a1a1a;
-            border-top: 3px solid #00ff88;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-            display: none;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
@@ -190,135 +152,80 @@
             </div>
         </div>
 
-        <div id="dynamicContent"></div>
+        <h1>Access Unlocked</h1>
+        <p class="subtitle">Your device-locked license key is ready.</p>
+
+        <div class="card">
+            <h2>Generation Success!</h2>
+            <p class="card-p">This key is locked to your device. Share it, and it won't work for others.</p>
+
+            <div class="key-box">
+                <span id="finalKey">SECURE FETCHING...</span>
+            </div>
+
+            <button class="btn" id="copyBtn" onclick="copyKey()">
+                COPY TO CLIPBOARD
+            </button>
+        </div>
     </div>
 
     <div class="footer">NIPEX LAG SECURITY SYSTEM</div>
 </div>
 
 <script>
-    (function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const source = urlParams.get('source');
-        const isValidSource = (source === 'official');
+    async function generateLockedKey() {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        const ip = data.ip;
 
-        const contentContainer = document.getElementById('dynamicContent');
-
-        function renderContent(isValid) {
-            if (isValid) {
-                contentContainer.innerHTML = `
-                    <h1>Access Unlocked</h1>
-                    <p class="subtitle">Your device-locked license key is ready.</p>
-
-                    <div class="card">
-                        <h2 style="color: var(--accent);">Generation Success!</h2>
-                        <p class="card-p">This key is locked to your device. Share it, and it won't work for others.</p>
-
-                        <div class="loader" id="loader"></div>
-                        <div class="key-box">
-                            <span id="finalKey">SECURE FETCHING...</span>
-                        </div>
-
-                        <button class="btn" id="copyBtn" onclick="copyKey()">
-                            COPY TO CLIPBOARD
-                        </button>
-                    </div>
-                `;
-                generateLockedKey();
-
-            } else {
-                contentContainer.innerHTML = `
-                    <h1 style="color: var(--error);">Access Denied</h1>
-                    <p class="subtitle" style="color: #ff6666;">Unauthorized request detected.</p>
-
-                    <div class="card">
-                        <span class="error-icon">🚫</span>
-                        <h2 class="error-title">Bypass Detected!</h2>
-                        <p class="card-p">Direct access is prohibited. Please use the official link from the script to generate your key.</p>
-
-                        <div class="key-box error-box">
-                            <span id="finalKey">ACCESS BLOCKED</span>
-                        </div>
-
-                        <button class="btn btn-red" onclick="location.href='steps.html'">
-                            RETURN TO STEPS
-                        </button>
-                    </div>
-                `;
+        // Aaj ki Date (Daily expiry ke liye)
+        const day = Math.floor(Date.now() / 86400000);
+        const ipSeed = parseInt(ip.replace(/\./g, '').substring(0, 6)); 
+        
+        // Seed: IP + Date + Year (Ye App se match hona chahiye)
+        let seed = ipSeed + day + 2026; 
+        
+        function rnd() { 
+            var x = Math.sin(seed++) * 10000; 
+            return Math.abs(x - Math.floor(x)); 
+        }
+        
+        const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        let segments = [];
+        for(let i=0; i<4; i++) {
+            let s = "";
+            for(let j=0; j<4; j++) {
+                let r = Math.floor(rnd() * chars.length);
+                s += chars.charAt(r);
             }
+            segments.push(s);
         }
 
-        async function generateLockedKey() {
-            const keyElement = document.getElementById('finalKey');
-            const loader = document.getElementById('loader');
-            if (!keyElement) return;
+        const finalKey = "NIPEX-" + segments.join("-");
+        document.getElementById('finalKey').innerText = finalKey;
 
-            if (loader) loader.style.display = 'block';
-            keyElement.innerText = "GENERATING...";
+    } catch (err) {
+        document.getElementById('finalKey').innerText = "CONNECT TO INTERNET";
+    }
+}
 
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                const ip = data.ip;
+    function copyKey() {
+        const keyText = document.getElementById('finalKey').innerText;
+        if(keyText.includes("SECURE") || keyText.includes("CONNECT")) return;
 
-                const day = Math.floor(Date.now() / 86400000);
-                const ipSeed = parseInt(ip.replace(/\./g, '').substring(0, 6)); 
-                
-                let seed = ipSeed + day + 2026; 
-                
-                function rnd() { 
-                    var x = Math.sin(seed++) * 10000; 
-                    return Math.abs(x - Math.floor(x)); 
-                }
-                
-                const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-                let segments = [];
-                for(let i=0; i<4; i++) {
-                    let s = "";
-                    for(let j=0; j<4; j++) {
-                        let r = Math.floor(rnd() * chars.length);
-                        s += chars.charAt(r);
-                    }
-                    segments.push(s);
-                }
+        navigator.clipboard.writeText(keyText).then(() => {
+            const btn = document.getElementById('copyBtn');
+            btn.innerText = "COPIED SUCCESSFULLY! ✅";
+            btn.style.background = "#00ff88";
+            setTimeout(() => { 
+                btn.innerText = "COPY TO CLIPBOARD"; 
+                btn.style.background = "#ffffff";
+            }, 2000);
+        });
+    }
 
-                const finalKey = "NIPEX-" + segments.join("-");
-                
-                setTimeout(() => {
-                    if (loader) loader.style.display = 'none';
-                    keyElement.innerText = finalKey;
-                }, 1500);
-
-            } catch (err) {
-                if (loader) loader.style.display = 'none';
-                keyElement.innerText = "CONNECT TO INTERNET";
-            }
-        }
-
-        window.copyKey = function() {
-            const keyText = document.getElementById('finalKey')?.innerText;
-            if (!keyText || keyText.includes("SECURE") || keyText.includes("CONNECT") || keyText.includes("BLOCKED") || keyText.includes("GENERATING")) return;
-
-            navigator.clipboard.writeText(keyText).then(() => {
-                const btn = document.getElementById('copyBtn');
-                if (!btn) return;
-                btn.innerText = "COPIED SUCCESSFULLY! ✅";
-                btn.style.background = "#00ff88";
-                setTimeout(() => { 
-                    btn.innerText = "COPY TO CLIPBOARD"; 
-                    btn.style.background = "#ffffff";
-                }, 2000);
-            });
-        };
-
-        renderContent(isValidSource);
-
-        if (isValidSource) {
-            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-            window.history.replaceState({}, document.title, cleanUrl);
-        }
-
-    })();
+    window.onload = generateLockedKey;
 </script>
 </body>
 </html>
