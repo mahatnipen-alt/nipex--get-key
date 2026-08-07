@@ -27,7 +27,6 @@
             margin-top: 50px;
         }
 
-        /* --- TEXT LOGO STYLES --- */
         .key-icon { 
             background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
             width: 120px; 
@@ -140,7 +139,6 @@
             font-weight: bold; 
         }
 
-        /* Error State Styles */
         .error-title { color: var(--error); }
         .error-icon { 
             font-size: 48px; 
@@ -152,6 +150,32 @@
         }
         .error-box #finalKey { 
             color: var(--error); 
+        }
+
+        .btn-red { 
+            background: var(--error); 
+            color: white; 
+        }
+        .btn-red:hover { 
+            background: #cc0000; 
+            transform: scale(1.03); 
+            box-shadow: 0 10px 20px rgba(255,68,68,0.2);
+        }
+
+        .loader {
+            border: 3px solid #1a1a1a;
+            border-top: 3px solid #00ff88;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -166,7 +190,6 @@
             </div>
         </div>
 
-        <!-- Dynamic Content will be injected here -->
         <div id="dynamicContent"></div>
     </div>
 
@@ -175,18 +198,14 @@
 
 <script>
     (function() {
-        // --- SOURCE VERIFICATION LOGIC ---
         const urlParams = new URLSearchParams(window.location.search);
         const source = urlParams.get('source');
         const isValidSource = (source === 'official');
 
-        // Get the container where we'll render content
         const contentContainer = document.getElementById('dynamicContent');
 
-        // --- RENDER FUNCTION ---
         function renderContent(isValid) {
             if (isValid) {
-                // --- OFFICIAL SOURCE: Show Key Generation UI ---
                 contentContainer.innerHTML = `
                     <h1>Access Unlocked</h1>
                     <p class="subtitle">Your device-locked license key is ready.</p>
@@ -195,6 +214,7 @@
                         <h2 style="color: var(--accent);">Generation Success!</h2>
                         <p class="card-p">This key is locked to your device. Share it, and it won't work for others.</p>
 
+                        <div class="loader" id="loader"></div>
                         <div class="key-box">
                             <span id="finalKey">SECURE FETCHING...</span>
                         </div>
@@ -204,11 +224,9 @@
                         </button>
                     </div>
                 `;
-                // Generate the key after rendering
                 generateLockedKey();
 
             } else {
-                // --- UNAUTHORIZED SOURCE: Show Bypass Error ---
                 contentContainer.innerHTML = `
                     <h1 style="color: var(--error);">Access Denied</h1>
                     <p class="subtitle" style="color: #ff6666;">Unauthorized request detected.</p>
@@ -222,18 +240,21 @@
                             <span id="finalKey">ACCESS BLOCKED</span>
                         </div>
 
-                        <button class="btn" style="background: #333; color: #666; cursor: not-allowed;" disabled>
-                            ACCESS DENIED
+                        <button class="btn btn-red" onclick="location.href='steps.html'">
+                            RETURN TO STEPS
                         </button>
                     </div>
                 `;
             }
         }
 
-        // --- KEY GENERATION FUNCTION (Same as before) ---
         async function generateLockedKey() {
             const keyElement = document.getElementById('finalKey');
+            const loader = document.getElementById('loader');
             if (!keyElement) return;
+
+            if (loader) loader.style.display = 'block';
+            keyElement.innerText = "GENERATING...";
 
             try {
                 const response = await fetch('https://api.ipify.org?format=json');
@@ -262,17 +283,21 @@
                 }
 
                 const finalKey = "NIPEX-" + segments.join("-");
-                keyElement.innerText = finalKey;
+                
+                setTimeout(() => {
+                    if (loader) loader.style.display = 'none';
+                    keyElement.innerText = finalKey;
+                }, 1500);
 
             } catch (err) {
+                if (loader) loader.style.display = 'none';
                 keyElement.innerText = "CONNECT TO INTERNET";
             }
         }
 
-        // --- COPY FUNCTION (Global for button onclick) ---
         window.copyKey = function() {
             const keyText = document.getElementById('finalKey')?.innerText;
-            if (!keyText || keyText.includes("SECURE") || keyText.includes("CONNECT") || keyText.includes("BLOCKED")) return;
+            if (!keyText || keyText.includes("SECURE") || keyText.includes("CONNECT") || keyText.includes("BLOCKED") || keyText.includes("GENERATING")) return;
 
             navigator.clipboard.writeText(keyText).then(() => {
                 const btn = document.getElementById('copyBtn');
@@ -286,18 +311,11 @@
             });
         };
 
-        // --- INITIALIZE ---
         renderContent(isValidSource);
 
-        // If it's a valid source, ensure key generation runs after DOM is fully ready
         if (isValidSource) {
-            // generateLockedKey is called inside renderContent
-            // but we also ensure it runs if called again
-            if (document.readyState === 'complete') {
-                generateLockedKey();
-            } else {
-                window.addEventListener('load', generateLockedKey);
-            }
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
         }
 
     })();
