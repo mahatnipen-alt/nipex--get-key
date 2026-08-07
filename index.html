@@ -91,7 +91,7 @@
             position: relative;
         }
 
-        h2 { font-size: 22px; margin-bottom: 12px; color: var(--accent); font-weight: 700; }
+        h2 { font-size: 22px; margin-bottom: 12px; font-weight: 700; }
         .card-p { color: #999; font-size: 14px; line-height: 1.6; margin-bottom: 25px; }
 
         .key-box { 
@@ -139,6 +139,20 @@
             text-transform: uppercase; 
             font-weight: bold; 
         }
+
+        /* Error State Styles */
+        .error-title { color: var(--error); }
+        .error-icon { 
+            font-size: 48px; 
+            margin-bottom: 10px; 
+            display: block; 
+        }
+        .error-box { 
+            border-color: var(--error) !important; 
+        }
+        .error-box #finalKey { 
+            color: var(--error); 
+        }
     </style>
 </head>
 <body>
@@ -152,80 +166,141 @@
             </div>
         </div>
 
-        <h1>Access Unlocked</h1>
-        <p class="subtitle">Your device-locked license key is ready.</p>
-
-        <div class="card">
-            <h2>Generation Success!</h2>
-            <p class="card-p">This key is locked to your device. Share it, and it won't work for others.</p>
-
-            <div class="key-box">
-                <span id="finalKey">SECURE FETCHING...</span>
-            </div>
-
-            <button class="btn" id="copyBtn" onclick="copyKey()">
-                COPY TO CLIPBOARD
-            </button>
-        </div>
+        <!-- Dynamic Content will be injected here -->
+        <div id="dynamicContent"></div>
     </div>
 
     <div class="footer">NIPEX LAG SECURITY SYSTEM</div>
 </div>
 
 <script>
-    async function generateLockedKey() {
-    try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        const ip = data.ip;
+    (function() {
+        // --- SOURCE VERIFICATION LOGIC ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const source = urlParams.get('source');
+        const isValidSource = (source === 'official');
 
-        // Aaj ki Date (Daily expiry ke liye)
-        const day = Math.floor(Date.now() / 86400000);
-        const ipSeed = parseInt(ip.replace(/\./g, '').substring(0, 6)); 
-        
-        // Seed: IP + Date + Year (Ye App se match hona chahiye)
-        let seed = ipSeed + day + 2026; 
-        
-        function rnd() { 
-            var x = Math.sin(seed++) * 10000; 
-            return Math.abs(x - Math.floor(x)); 
-        }
-        
-        const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-        let segments = [];
-        for(let i=0; i<4; i++) {
-            let s = "";
-            for(let j=0; j<4; j++) {
-                let r = Math.floor(rnd() * chars.length);
-                s += chars.charAt(r);
+        // Get the container where we'll render content
+        const contentContainer = document.getElementById('dynamicContent');
+
+        // --- RENDER FUNCTION ---
+        function renderContent(isValid) {
+            if (isValid) {
+                // --- OFFICIAL SOURCE: Show Key Generation UI ---
+                contentContainer.innerHTML = `
+                    <h1>Access Unlocked</h1>
+                    <p class="subtitle">Your device-locked license key is ready.</p>
+
+                    <div class="card">
+                        <h2 style="color: var(--accent);">Generation Success!</h2>
+                        <p class="card-p">This key is locked to your device. Share it, and it won't work for others.</p>
+
+                        <div class="key-box">
+                            <span id="finalKey">SECURE FETCHING...</span>
+                        </div>
+
+                        <button class="btn" id="copyBtn" onclick="copyKey()">
+                            COPY TO CLIPBOARD
+                        </button>
+                    </div>
+                `;
+                // Generate the key after rendering
+                generateLockedKey();
+
+            } else {
+                // --- UNAUTHORIZED SOURCE: Show Bypass Error ---
+                contentContainer.innerHTML = `
+                    <h1 style="color: var(--error);">Access Denied</h1>
+                    <p class="subtitle" style="color: #ff6666;">Unauthorized request detected.</p>
+
+                    <div class="card">
+                        <span class="error-icon">🚫</span>
+                        <h2 class="error-title">Bypass Detected!</h2>
+                        <p class="card-p">Direct access is prohibited. Please use the official link from the script to generate your key.</p>
+
+                        <div class="key-box error-box">
+                            <span id="finalKey">ACCESS BLOCKED</span>
+                        </div>
+
+                        <button class="btn" style="background: #333; color: #666; cursor: not-allowed;" disabled>
+                            ACCESS DENIED
+                        </button>
+                    </div>
+                `;
             }
-            segments.push(s);
         }
 
-        const finalKey = "NIPEX-" + segments.join("-");
-        document.getElementById('finalKey').innerText = finalKey;
+        // --- KEY GENERATION FUNCTION (Same as before) ---
+        async function generateLockedKey() {
+            const keyElement = document.getElementById('finalKey');
+            if (!keyElement) return;
 
-    } catch (err) {
-        document.getElementById('finalKey').innerText = "CONNECT TO INTERNET";
-    }
-}
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                const ip = data.ip;
 
-    function copyKey() {
-        const keyText = document.getElementById('finalKey').innerText;
-        if(keyText.includes("SECURE") || keyText.includes("CONNECT")) return;
+                const day = Math.floor(Date.now() / 86400000);
+                const ipSeed = parseInt(ip.replace(/\./g, '').substring(0, 6)); 
+                
+                let seed = ipSeed + day + 2026; 
+                
+                function rnd() { 
+                    var x = Math.sin(seed++) * 10000; 
+                    return Math.abs(x - Math.floor(x)); 
+                }
+                
+                const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+                let segments = [];
+                for(let i=0; i<4; i++) {
+                    let s = "";
+                    for(let j=0; j<4; j++) {
+                        let r = Math.floor(rnd() * chars.length);
+                        s += chars.charAt(r);
+                    }
+                    segments.push(s);
+                }
 
-        navigator.clipboard.writeText(keyText).then(() => {
-            const btn = document.getElementById('copyBtn');
-            btn.innerText = "COPIED SUCCESSFULLY! ✅";
-            btn.style.background = "#00ff88";
-            setTimeout(() => { 
-                btn.innerText = "COPY TO CLIPBOARD"; 
-                btn.style.background = "#ffffff";
-            }, 2000);
-        });
-    }
+                const finalKey = "NIPEX-" + segments.join("-");
+                keyElement.innerText = finalKey;
 
-    window.onload = generateLockedKey;
+            } catch (err) {
+                keyElement.innerText = "CONNECT TO INTERNET";
+            }
+        }
+
+        // --- COPY FUNCTION (Global for button onclick) ---
+        window.copyKey = function() {
+            const keyText = document.getElementById('finalKey')?.innerText;
+            if (!keyText || keyText.includes("SECURE") || keyText.includes("CONNECT") || keyText.includes("BLOCKED")) return;
+
+            navigator.clipboard.writeText(keyText).then(() => {
+                const btn = document.getElementById('copyBtn');
+                if (!btn) return;
+                btn.innerText = "COPIED SUCCESSFULLY! ✅";
+                btn.style.background = "#00ff88";
+                setTimeout(() => { 
+                    btn.innerText = "COPY TO CLIPBOARD"; 
+                    btn.style.background = "#ffffff";
+                }, 2000);
+            });
+        };
+
+        // --- INITIALIZE ---
+        renderContent(isValidSource);
+
+        // If it's a valid source, ensure key generation runs after DOM is fully ready
+        if (isValidSource) {
+            // generateLockedKey is called inside renderContent
+            // but we also ensure it runs if called again
+            if (document.readyState === 'complete') {
+                generateLockedKey();
+            } else {
+                window.addEventListener('load', generateLockedKey);
+            }
+        }
+
+    })();
 </script>
 </body>
 </html>
