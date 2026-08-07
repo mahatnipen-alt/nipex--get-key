@@ -140,6 +140,15 @@
             background: #555;
         }
 
+        /* 🔴 HIDDEN BUTTON - Jab tak expire na ho */
+        .btn-hidden {
+            display: none !important;
+        }
+
+        .btn-visible {
+            display: block !important;
+        }
+
         .timer-box {
             margin-top: 15px;
             padding: 12px;
@@ -173,6 +182,11 @@
             letter-spacing: 2px; 
             text-transform: uppercase; 
             font-weight: bold; 
+        }
+
+        /* Expired state styles */
+        .expired .timer-box {
+            border-color: #ff4444;
         }
     </style>
 </head>
@@ -210,8 +224,8 @@
                 COPY TO CLIPBOARD
             </button>
 
-            <!-- REFRESH BUTTON - New key generate karne ke liye -->
-            <button class="btn btn-secondary" onclick="refreshKey()">
+            <!-- 🔴 GENERATE NEW KEY BUTTON - Initially HIDDEN -->
+            <button class="btn btn-secondary btn-hidden" id="refreshBtn" onclick="refreshKey()">
                 🔄 GENERATE NEW KEY
             </button>
         </div>
@@ -230,10 +244,40 @@
             const data = await response.json();
             const ip = data.ip;
 
-            // 🔴🔴🔴 24-HOUR EXPIRY LOGIC 🔴🔴🔴
-            // Har 24 hours mein seed change hota hai
+            // Check Local Storage
+            const savedExpiry = localStorage.getItem('keyExpiryTime');
+            const savedKey = localStorage.getItem('generatedKey');
+            const savedIp = localStorage.getItem('deviceIp');
+
+            // Agar same device hai aur timer save hai toh use karo
+            if (savedExpiry && savedKey && savedIp === ip) {
+                const expiryTime = parseInt(savedExpiry);
+                const now = Date.now();
+
+                if (expiryTime > now) {
+                    // Timer active hai
+                    keyExpiryTime = expiryTime;
+                    document.getElementById('finalKey').innerText = savedKey;
+                    document.getElementById('finalKey').style.color = "#00ff88";
+                    document.getElementById('expiryStatus').innerText = "KEY IS ACTIVE";
+                    document.getElementById('expiryStatus').style.color = "#00ff88";
+                    
+                    // 🔴 Refresh button HIDE karo (kyunki key active hai)
+                    document.getElementById('refreshBtn').classList.remove('btn-visible');
+                    document.getElementById('refreshBtn').classList.add('btn-hidden');
+                    
+                    startCountdown();
+                    return;
+                } else {
+                    // Timer expire ho chuka hai
+                    showExpiredState();
+                    return;
+                }
+            }
+
+            // 🔴 NEW KEY GENERATE (Pehli baar)
             const hour = Math.floor(Date.now() / 3600000);
-            const dayHour = Math.floor(hour / 24); // Unique every 24 hours
+            const dayHour = Math.floor(hour / 24);
             
             const ipSeed = parseInt(ip.replace(/\./g, '').substring(0, 6)); 
             let seed = ipSeed + dayHour + 2026; 
@@ -258,10 +302,19 @@
             document.getElementById('finalKey').innerText = finalKey;
             document.getElementById('finalKey').style.color = "#00ff88";
             
-            // 🔴🔴🔴 24-HOUR COUNTDOWN TIMER START 🔴🔴🔴
+            // Save to Local Storage
             keyExpiryTime = Date.now() + (24 * 60 * 60 * 1000);
-            document.getElementById('expiryStatus').innerText = "✅ Key is active";
+            localStorage.setItem('keyExpiryTime', keyExpiryTime.toString());
+            localStorage.setItem('generatedKey', finalKey);
+            localStorage.setItem('deviceIp', ip);
+            
+            document.getElementById('expiryStatus').innerText = " KEY IS ACTIVE";
             document.getElementById('expiryStatus').style.color = "#00ff88";
+            
+            // 🔴 Refresh button HIDE karo (key active hai)
+            document.getElementById('refreshBtn').classList.remove('btn-visible');
+            document.getElementById('refreshBtn').classList.add('btn-hidden');
+            
             startCountdown();
 
         } catch (err) {
@@ -278,16 +331,10 @@
 
             if (timeLeft <= 0) {
                 clearInterval(countdownInterval);
-                document.getElementById('finalKey').innerText = "⛔ KEY EXPIRED";
-                document.getElementById('finalKey').style.color = "#ff4444";
-                document.getElementById('timerDisplay').innerText = "00:00:00";
-                document.getElementById('expiryStatus').innerText = "❌ Key expired! Generate new key.";
-                document.getElementById('expiryStatus').style.color = "#ff4444";
-                document.getElementById('timerDisplay').style.color = "#ff4444";
+                showExpiredState();
                 return;
             }
 
-            // Calculate hours, minutes, seconds
             const hours = Math.floor(timeLeft / 3600000);
             const minutes = Math.floor((timeLeft % 3600000) / 60000);
             const seconds = Math.floor((timeLeft % 60000) / 1000);
@@ -297,9 +344,26 @@
         }, 1000);
     }
 
+    // 🔴 EXPIRED STATE - Show Refresh Button
+    function showExpiredState() {
+        document.getElementById('finalKey').innerText = "⛔ KEY EXPIRED";
+        document.getElementById('finalKey').style.color = "#ff4444";
+        document.getElementById('timerDisplay').innerText = "00:00:00";
+        document.getElementById('expiryStatus').innerText = "❌ Key expired! Generate new key.";
+        document.getElementById('expiryStatus').style.color = "#ff4444";
+        document.getElementById('timerDisplay').style.color = "#ff4444";
+        
+        // 🔴🔴🔴 REFRESH BUTTON SHOW KARO (24 hours complete) 🔴🔴🔴
+        document.getElementById('refreshBtn').classList.remove('btn-hidden');
+        document.getElementById('refreshBtn').classList.add('btn-visible');
+        
+        // Local storage clear karo
+        localStorage.removeItem('keyExpiryTime');
+        localStorage.removeItem('generatedKey');
+    }
+
     function copyKey() {
         const keyText = document.getElementById('finalKey').innerText;
-        // 🔴 EXPIRED key copy nahi ho sakti
         if(keyText.includes("SECURE") || keyText.includes("CONNECT") || keyText.includes("EXPIRED")) {
             return;
         }
@@ -315,11 +379,22 @@
         });
     }
 
-    // 🔴 REFRESH FUNCTION - Naya key generate karne ke liye
+    // 🔴 REFRESH FUNCTION - Naya key generate
     function refreshKey() {
         if (countdownInterval) clearInterval(countdownInterval);
+        
+        // Local storage clear karo
+        localStorage.removeItem('keyExpiryTime');
+        localStorage.removeItem('generatedKey');
+        localStorage.removeItem('deviceIp');
+        
         document.getElementById('timerDisplay').style.color = "#00ff88";
         document.getElementById('expiryStatus').style.color = "#00ff88";
+        
+        // 🔴 Refresh button HIDE karo (naya key generate hoga)
+        document.getElementById('refreshBtn').classList.remove('btn-visible');
+        document.getElementById('refreshBtn').classList.add('btn-hidden');
+        
         generateLockedKey();
     }
 
